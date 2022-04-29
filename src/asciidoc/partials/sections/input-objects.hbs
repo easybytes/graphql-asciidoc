@@ -1,0 +1,11 @@
+{{#if (hasType types "INPUT_OBJECT") }}
+== Input Types
+
+{{#with (filter types "kind" "INPUT_OBJECT") }}
+{{#each this}}
+
+{{> input-object }}
+{{/each}}
+{{/with}}
+{{/if}}
+

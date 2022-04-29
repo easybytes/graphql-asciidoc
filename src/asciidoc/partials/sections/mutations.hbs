@@ -1,0 +1,12 @@
+{{#with (findType types mutationType.name) }}
+== Mutations ({{name}})
+
+{{description}}
+
+{{#each fields}}
+
+{{> mutation }}
+{{/each}}
+{{/with}}
+
+

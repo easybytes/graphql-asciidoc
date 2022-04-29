@@ -1,0 +1,12 @@
+{{#if (hasType types "ENUM") }}
+== Enums
+
+{{#with (filter types "kind" "ENUM") }}
+{{#each this}}
+
+{{> enum }}
+
+{{/each}}
+{{/with}}
+{{/if}}
+

@@ -1,0 +1,11 @@
+{{#if (hasObjects this)}}
+== Objects
+{{#with (findObjects this) }}
+{{#each this}}
+{{> object }}
+{{/each}}
+{{/with}}
+{{/if}}
+
+
+

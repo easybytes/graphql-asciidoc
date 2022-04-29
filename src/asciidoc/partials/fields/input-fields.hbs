@@ -1,0 +1,16 @@
+{{#if inputFields }}
+
+.Input Fields
+[cols="1,1,1,2"]
+|===
+|Argument|Type|Default|Description
+{{#each inputFields }}
+
+|{{ name }}
+|{{ kind type }}
+|{{ default }}
+|{{ description }}
+{{/each}}
+
+|===
+{{/if}}

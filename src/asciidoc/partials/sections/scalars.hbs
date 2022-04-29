@@ -1,0 +1,12 @@
+{{#if (hasType types "SCALAR") }}
+== Scalars
+
+{{#with (filter types "kind" "SCALAR") }}
+{{#each this}}
+
+{{> scalar }}
+
+{{/each}}
+{{/with}}
+{{/if}}
+

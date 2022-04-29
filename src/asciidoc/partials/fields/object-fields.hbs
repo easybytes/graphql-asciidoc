@@ -1,0 +1,22 @@
+{{#if fields }}
+
+.Fields
+[cols="1,1,1,2"]
+|===
+|Field|Argument|Type|Description
+
+{{#each fields}}
+|{{ name }}
+|
+|{{ kind type }}
+|{{ description }}
+
+{{#each args }}
+|
+|{{ name }}
+|{{ kind type }}
+|{{ description }}
+{{/each}}
+{{/each}}
+|===
+{{/if}}

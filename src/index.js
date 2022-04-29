@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict'
+
 const parseArgs = require('minimist')
 const resolveFrom = require('resolve-from')
 const { loadSchemaJSON, schemaToJSON } = require('./loadSchemaJSON')
-const renderSchema = require('./renderSchema')
-const updateSchema = require('./updateSchema')
-const diffSchema = require('./diffSchema')
+const renderSchema = require('./renderTemplate')
+const fs = require('fs')
 
 function safeExit(code) {
   process.on('exit', function() {
@@ -18,7 +18,7 @@ function printHelp(console) {
   console.log(`
   Usage: ${name} [options] <schema>
 
-  Output a Markdown document with rendered descriptions and links between types.
+  Output an asciidoc document with rendered descriptions and links between types.
   The schema may be specified as:
 
     - a URL to the GraphQL endpoint (the introspection query will be run)
@@ -26,18 +26,16 @@ function printHelp(console) {
     - a JSON document containing the schema (as returned by the introspection query)
     - an importable module with the schema as its default export (either an instance
       of GraphQLSchema or a JSON object)
-
+      
   Options:
 
+    --language <string>    Sets the output language (default: 'asciidoc')
+    --layout <string>      Sets the layout (default: 'main')
     --title <string>       Change the top heading title (default: 'Schema Types')
     --no-title             Do not print a default title
     --no-toc               Do not print table of contents
-    --prologue <string>    Include custom Markdown after the title
-    --epilogue <string>    Include custom Markdown after everything else
     --heading-level <num>  Heading level to begin at, useful if you are embedding the
                            output in a document with other sections (default: 1)
-    --update-file <file>   Markdown document to update (between comment markers) or
-                           create (if the file does not exist)
     --require <module>     If importing the schema from a module, require the specified
                            module first (useful for e.g. babel-register)
     --header <name=value>  Additional header(s) to use in GraphQL request
@@ -74,6 +72,8 @@ function run(
     const loadOptions = { headers }
     loadSchemaJSON(schemaPath, loadOptions).then(schema => {
       const options = {
+        language: args.language,
+        layout: args.layout,
         title: args.title,
         skipTitle: false,
         prologue: args.prologue,
@@ -93,25 +93,13 @@ function run(
           }
         })
       }
-      const updateFile = args['update-file']
-      if (updateFile) {
-        updateSchema(updateFile, schema, options)
-          .then(() => {
-            if (exit) {
-              safeExit(0)
-            }
-          })
-          .catch(err => {
-            console.error(err)
-            if (exit) {
-              safeExit(1)
-            }
-          })
-      } else {
-        renderSchema(schema, options)
-        if (exit) {
-          safeExit(0)
-        }
+      ;(async () => {
+        const results = await renderSchema(schema, options)
+        const buffer = Buffer.from(results)
+        fs.writeFileSync('output/test.adoc', buffer)
+      })()
+      if (exit) {
+        safeExit(0)
       }
     })
   } else {
@@ -126,9 +114,7 @@ module.exports = {
   run,
   loadSchemaJSON,
   schemaToJSON,
-  renderSchema,
-  updateSchema,
-  diffSchema
+  renderSchema
 }
 
 if (require.main === module) {

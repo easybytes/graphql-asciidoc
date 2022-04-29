@@ -1,0 +1,13 @@
+{{#if enumValues}}
+.Values
+[cols="1,3a"]
+|===
+|Value |Description
+{{#each enumValues}}
+
+|{{name}}
+|{{ description }}
+{{> deprecated }}
+{{/each}}
+|===
+{{/if}}

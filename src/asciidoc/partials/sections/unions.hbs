@@ -1,0 +1,11 @@
+{{#if (hasType types "UNION") }}
+== Unions
+
+{{#with (filter types "kind" "UNION") }}
+{{#each this}}
+
+{{> union }}
+{{/each}}
+{{/with}}
+{{/if}}
+

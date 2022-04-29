@@ -1,0 +1,12 @@
+{{#with (findType types subscriptionType.name) }}
+== Subscriptions ({{name}})
+
+{{description}}
+
+{{#each fields}}
+
+{{> subscription }}
+{{/each}}
+{{/with}}
+
+

@@ -1,0 +1,12 @@
+{{#with (findType types queryType.name) }}
+== Queries ({{name}})
+
+{{description}}
+
+{{#each fields}}
+
+{{> query }}
+{{/each}}
+{{/with}}
+
+

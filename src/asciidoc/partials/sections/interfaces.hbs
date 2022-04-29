@@ -1,0 +1,12 @@
+{{#if (hasType types "INTERFACE") }}
+==== Interfaces
+
+{{#with (filter types "kind" "INTERFACE") }}
+{{#each this}}
+
+{{> interface }}
+
+{{/each}}
+{{/with}}
+{{/if}}
+
